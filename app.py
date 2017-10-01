@@ -2,11 +2,12 @@ import os
 import motor.motor_asyncio
 import math
 import jinja2
+import asyncio
 import aiohttp_jinja2
 from aiohttp import web
 
 from  utils import get_files_size, get_files_list
-from base import get_torrents_count, search_torrents, get_torrent_details, get_last_torrents
+from base import create_indexes, get_torrents_count, search_torrents, get_torrent_details, get_last_torrents
 
 try:
     import local
@@ -120,4 +121,7 @@ app.router.add_get("/search/{query}", render_query)
 app.router.add_get("/search/{query}/{page}", render_query)
 app.router.add_get("/torrent/{info_hash}", render_torrent)
 
-web.run_app(app, host="127.0.0.1")
+loop = asyncio.get_event_loop()
+loop.run_until_complete(create_indexes(db))
+
+web.run_app(app, host="127.0.0.1", loop=loop)

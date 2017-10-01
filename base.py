@@ -1,5 +1,21 @@
-from pymongo import DESCENDING
+from pymongo import ASCENDING, TEXT, DESCENDING
 from utils import async_timing
+
+
+async def create_indexes(db):
+    torrents = db.torrents
+    torrents_indexes = await torrents.index_information()
+
+    for index_info in ({"name": "fulltext", "keys": [("name", TEXT),
+                                                     ("info_hash", TEXT),
+                                                     ("files.path", TEXT)],
+                        "weights": {"name": 99999, "info_hash": 99999, "files.path": 1},
+                        "default_language": "english"},
+                       {"name": "info_hash", "keys": [("info_hash", ASCENDING)], "unique": True},
+                       {"name": "access_count", "keys": [("access_count", ASCENDING)]},
+                       {"name": "timestamp", "keys": [("timestamp", DESCENDING)]}):
+        if index_info["name"] not in torrents_indexes:
+            await torrents.create_index(**index_info)
 
 
 @async_timing
