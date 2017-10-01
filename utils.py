@@ -4,16 +4,16 @@ from functools import wraps
 from time import time
 
 
-async def async_timing(f):
+def async_timing(f):
     @wraps(f)
     async def wrap(*args, **kwargs):
         ts = time()
         result = await f(*args, **kwargs)
         te = time()
 
-        return (te - ts, result)
+        return te - ts, result
 
-    return await wrap
+    return wrap
 
 
 def sizeof_fmt(num, suffix="B"):
