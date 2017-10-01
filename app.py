@@ -46,7 +46,7 @@ async def render_query(request):
             db, query, ["name", "files", "info_hash"], (page - 1) * results_per_page, results_per_page
         )
 
-        response = await render_results("search", query, page, results, results_count, elapsed_time, request)
+        response = await render_results("/search", query, page, results, results_count, elapsed_time, request)
         return response
     else:
         url = "/search/{0}".format(request.query["q"])
