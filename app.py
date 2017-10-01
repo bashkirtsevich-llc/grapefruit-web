@@ -30,7 +30,7 @@ async def render_latest(request):
     page = int(request.match_info.get("page", "1"))
 
     elapsed_time, (results_count, results) = await get_last_torrents(
-        db, ["name", "files", "info_hash"], results_per_page, (min(page, 10) - 1) * results_per_page
+        db, ["name", "files", "info_hash"], (min(page, 10) - 1) * results_per_page, results_per_page
     )
 
     response = await render_results("/latest", "", page, results, min(results_count, 100), elapsed_time, request)
@@ -43,7 +43,7 @@ async def render_query(request):
 
     if query:
         elapsed_time, (results_count, results) = await search_torrents(
-            db, query, ["name", "files", "info_hash"], results_per_page, (page - 1) * results_per_page
+            db, query, ["name", "files", "info_hash"], (page - 1) * results_per_page, results_per_page
         )
 
         response = await render_results("search", query, page, results, results_count, elapsed_time, request)

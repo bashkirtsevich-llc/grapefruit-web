@@ -35,7 +35,7 @@ async def search_torrents(db, query, fields, offset=0, limit=0):
 
     if cursor:
         results_count = await cursor.count()
-        results = await cursor.skip(offset).limit(limit).to_list(results_count)
+        results = await cursor.skip(offset).limit(limit).to_list(None)
     else:
         results_count, results = 0, []
 
@@ -70,7 +70,7 @@ async def get_last_torrents(db, fields, offset=0, limit=100):
 
     if cursor:
         results_count = min(await cursor.count(), 100)
-        results = await cursor.skip(offset).limit(limit).to_list(results_count)
+        results = await cursor.skip(offset).limit(limit).to_list(None)
     else:
         results_count, results = 0, []
 
