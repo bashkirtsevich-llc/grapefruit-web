@@ -28,31 +28,28 @@ async def render_home(request):
 async def render_latest(request):
     page = int(request.match_info.get("page", "1"))
 
-    elapsed_time, results_count, results = get_last_torrents(
-        db,
-        fields=["name", "files", "info_hash"],
-        limit=results_per_page,
-        offset=(min(page, 10) - 1) * results_per_page
+    elapsed_time, (results_count, results) = await get_last_torrents(
+        db, ["name", "files", "info_hash"], results_per_page, (min(page, 10) - 1) * results_per_page
     )
 
-    response = await render_results("latest", "", page, results, min(results_count, 100), elapsed_time, request)
+    response = await render_results("/latest", "", page, results, min(results_count, 100), elapsed_time, request)
     return response
 
 
 async def render_query(request):
-    query = request.match_info["query"]
+    query = request.match_info.get("query", None)
     page = int(request.match_info.get("page", "1"))
 
-    elapsed_time, results_count, results = search_torrents(
-        db,
-        query=query,
-        fields=["name", "files", "info_hash"],
-        limit=results_per_page,
-        offset=(page - 1) * results_per_page
-    )
+    if query:
+        elapsed_time, (results_count, results) = await search_torrents(
+            db, query, ["name", "files", "info_hash"], results_per_page, (page - 1) * results_per_page
+        )
 
-    response = await render_results("search", query, page, results, results_count, elapsed_time, request)
-    return response
+        response = await render_results("search", query, page, results, results_count, elapsed_time, request)
+        return response
+    else:
+        url = "/search/{0}".format(request.query["q"])
+        return web.HTTPFound(url)
 
 
 @aiohttp_jinja2.template("details.html")
@@ -118,8 +115,9 @@ app.router.add_static("/static", "static", name="static")
 app.router.add_get("/", render_home)
 app.router.add_get("/latest", render_latest)
 app.router.add_get("/latest/{page}", render_latest)
+app.router.add_get("/search", render_query)
 app.router.add_get("/search/{query}", render_query)
 app.router.add_get("/search/{query}/{page}", render_query)
 app.router.add_get("/torrent/{info_hash}", render_torrent)
 
-web.run_app(app)
+web.run_app(app, host="127.0.0.1")

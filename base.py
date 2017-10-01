@@ -11,14 +11,15 @@ async def search_torrents(db, query, fields, offset=0, limit=0):
     for field in fields:
         projection[field] = True
 
-    cursor = await db.torrents.find(
+    cursor = db.torrents.find(
         filter={"$text": {"$search": query}},
         projection=projection,
         sort=[("score", {"$meta": "textScore"}), ("timestamp", DESCENDING)]
     )
 
     if cursor:
-        results_count, results = cursor.count(), list(cursor.skip(offset).limit(limit))
+        results_count = await cursor.count()
+        results = await cursor.skip(offset).limit(limit).to_list(results_count)
     else:
         results_count, results = 0, []
 
@@ -45,14 +46,15 @@ async def get_last_torrents(db, fields, offset=0, limit=100):
     projection = {"_id": False}
     projection.update({field: True for field in fields})
 
-    cursor = await db.torrents.find(
+    cursor = db.torrents.find(
         filter={},
         projection=projection,
         sort=[("timestamp", DESCENDING)]
     )
 
     if cursor:
-        results_count, results = min(cursor.count(), 100), list(cursor.skip(offset).limit(limit))
+        results_count = min(await cursor.count(), 100)
+        results = await cursor.skip(offset).limit(limit).to_list(results_count)
     else:
         results_count, results = 0, []
 
