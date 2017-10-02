@@ -27,12 +27,12 @@ def sizeof_fmt(num, suffix="B"):
 
 
 def get_files_list(files, first_ten=False):
-    return list(
-        map(lambda file: {"name": "/".join(file["path"]),
-                          "size": sizeof_fmt(file["length"]),
-                          "icon": get_file_icon(file["path"][~0])},
-            files[:10] if first_ten else files)
-    )
+    return [
+        {"name": "/".join(file["path"]),
+         "size": sizeof_fmt(file["length"]),
+         "icon": get_file_icon(file["path"][~0])}
+        for file in (files[:10] if first_ten else files)
+    ]
 
 
 def get_files_size(files):
