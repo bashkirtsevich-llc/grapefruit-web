@@ -119,6 +119,8 @@ if __name__ == '__main__':
     client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"])
     db = client[os.getenv("MONGODB_BASE_NAME", "grapefruit")]
 
+    loop.run_until_complete(create_indexes(db))
+
     app = web.Application(middlewares=[error_middleware])
     aiohttp_jinja2.setup(app, loader=jinja2.FileSystemLoader("templates"))
 
@@ -130,7 +132,5 @@ if __name__ == '__main__':
     app.router.add_get("/search/{query}", lambda request: render_query(db, request))
     app.router.add_get("/search/{query}/{page}", lambda request: render_query(db, request))
     app.router.add_get("/torrent/{info_hash}", lambda request: render_torrent(db, request))
-
-    loop.run_until_complete(create_indexes(db))
 
     web.run_app(app, host="0.0.0.0", loop=loop)
