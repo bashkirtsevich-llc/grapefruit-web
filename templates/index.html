@@ -6,22 +6,24 @@
         <div class="index-logo">
           <img width="346" height="110" src="/static/logo.png" alt="Grapefruit torrents logo" class="logo">
         </div>
-        
+
         <div class="search-area">
           <form action="/search" method="get" name="search" role="search" accept-charset="utf-8" class="search-form" id="search-form">
             <input type="text" id="search-input" aria-label="Search" value="" title="Grapefruit torrents search" name="q" maxlength="2048" class="search-input" aria-haspopup="false" role="combobox" aria-autocomplete="both" spellcheck="false" autofocus="" autocomplete="off" placeholder="Indexing {{ torrents_count }} torrents">
-            
+
             <button class="search-btn">
               <i class="fa fa-search"></i>
             </button>
           </form>
         </div>
-        
+
         <h2>Magnet &amp; Torrent Search Engine</h2>
-        
+
+        {% if torrents_count > 0 %}
         <div class="recent-link">
           <a href="latest">Latest {% if torrents_count > 100 %}100{% else %}{{ torrents_count }}{% endif %} Torrents</a>
         </div>
+        {% endif %}
         <div class="footer">
             <div class="disclaimer">
                 <b>Disclaimer: </b>
