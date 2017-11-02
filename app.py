@@ -9,11 +9,6 @@ from aiohttp import web
 from  utils import get_files_size, get_files_list
 from base import create_indexes, get_torrents_count, search_torrents, get_torrent_details, get_last_torrents
 
-try:
-    import local
-except ImportError:
-    pass
-
 RESULTS_PER_PAGE = 10
 
 
