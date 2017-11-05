@@ -38,13 +38,12 @@ sudo docker build -t grapefruit-web .
 ```
 4. Start container
 ```bash
+# Regular execution
 sudo docker run grapefruit-web
-```
-Port forwarding:
-```bash
-sudo docker run -p 80:8080 grapefruit-web
-```
-Interactive mode:
-```bash
-sudo docker run -it -p 80:8080 grapefruit-web
+
+# Port forwarding:
+# sudo docker run -p 80:8080 grapefruit-web
+
+# Run in interactive mode:
+# sudo docker run -it -p 80:8080 grapefruit-web
 ```
