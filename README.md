@@ -1,10 +1,6 @@
 # Grapefruit-web
 Grapefruit web interface to access torrents database.
 
-Table of content:
-
-[TOC]
-
 ## Requirements
 * Python 3.6.3 or higher
 * MongoDB 3.2.17 or higher
