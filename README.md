@@ -6,7 +6,6 @@ Grapefruit web interface to access torrents database.
 * MongoDB 3.2.17 or higher
 
 ## Execution
-### Direct execution
 1. Install requirements
 ```bash
 pip install -r requirements.txt
@@ -19,31 +18,7 @@ Optional (default = `grapefruit`):
 ```
 MONGODB_BASE_NAME=grapefruit
 ```
-3. Start MongoDB
-4. Start web-server (by default server start at `0.0.0.0:8080`)
+3. Start web-server (by default server start at `0.0.0.0:8080`)
 ```bash
 python app.py
-```
-
-### Docker
-1. Install Docker
-2. Start Docker daemon (optional step)
-```bash
-sudo usermod -aG docker $(whoami)
-sudo service docker start
-```
-3. Build container
-```bash
-sudo docker build -t grapefruit-web .
-```
-4. Start container
-```bash
-# Regular execution
-sudo docker run grapefruit-web
-
-# Port forwarding:
-# sudo docker run -p 80:8080 grapefruit-web
-
-# Run in interactive mode:
-# sudo docker run -it -p 80:8080 grapefruit-web
 ```
