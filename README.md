@@ -1,4 +1,6 @@
 # Grapefruit-web
+[![Build Status](https://travis-ci.org/bashkirtsevich-llc/grapefruit-web.svg?branch=master)](https://travis-ci.org/bashkirtsevich-llc/grapefruit-web)
+
 Grapefruit web interface to access torrents database.
 
 ## Requirements
