@@ -20,8 +20,6 @@ async def create_indexes(db):
 
 @async_timing
 async def search_torrents(db, query, fields, offset=0, limit=0):
-    assert isinstance(fields, list)
-
     projection = {"score": {"$meta": "textScore"}, "_id": False}
 
     for field in fields:
